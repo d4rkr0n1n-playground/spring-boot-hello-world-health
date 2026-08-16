@@ -10,6 +10,7 @@ This is a minimal Spring Boot application that provides a single REST endpoint r
 
 - **Java Development Kit (JDK)**: Version 21 or higher
 - **Apache Maven**: Version 3.6 or higher (for building the project)
+- **Docker**: For containerized deployment (optional)
 - **Git**: For version control (optional)
 
 ## Project Structure
@@ -29,6 +30,8 @@ spring-boot-hello-world/
 │       └── java/com/example/demo/
 │           └── DemoApplicationTests.java  # Unit tests
 ├── pom.xml                                # Maven project configuration
+├── Dockerfile                             # Docker image configuration
+├── .dockerignore                          # Docker build context exclusions
 └── README.md                              # This file
 ```
 
@@ -39,6 +42,7 @@ spring-boot-hello-world/
 - **Maven**: Build and dependency management
 - **Lombok**: (Optional) Library for reducing boilerplate code
 - **Spring Boot Starter WebMVC**: For building web and REST applications
+- **Docker**: Containerization for consistent deployment across environments
 
 ## Building the Project
 
@@ -81,6 +85,57 @@ java -jar target/demo-0.0.1-SNAPSHOT.jar
 Run `DemoApplication.java` as a Java Application in your IDE (VS Code, IntelliJ IDEA, Eclipse, etc.)
 
 The application will start on the default port: **http://localhost:8080**
+
+## Docker Deployment
+
+### Building the Docker Image
+
+From the project root directory:
+
+```bash
+docker build -t spring-boot-hello-world:latest .
+```
+
+This uses a multi-stage build process:
+1. **Build stage**: Compiles the application using Maven
+2. **Runtime stage**: Runs the application using a lightweight JRE Alpine image
+
+### Running the Docker Container
+
+```bash
+docker run -p 8080:8080 spring-boot-hello-world:latest
+```
+
+### Verification
+
+Test the running container:
+
+```bash
+curl http://localhost:8080/hello
+```
+
+### Docker Compose (Optional)
+
+For easier management, create a `docker-compose.yml`:
+
+```yaml
+version: '3.8'
+
+services:
+  demo-app:
+    build: .
+    ports:
+      - "8080:8080"
+    environment:
+      - SPRING_APPLICATION_NAME=demo
+    restart: unless-stopped
+```
+
+Then run with:
+
+```bash
+docker-compose up
+```
 
 ## API Endpoints
 
@@ -148,6 +203,8 @@ public String echo(@RequestParam String message) {
 
 ## Next Steps
 
+- Deploy the application using Docker and Docker Compose
+- Set up Kubernetes manifests for production deployments
 - Explore Spring Data JPA for database integration
 - Add a database layer (H2, MySQL, PostgreSQL)
 - Implement service layer with business logic

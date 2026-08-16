@@ -1,0 +1,32 @@
+# Git
+.git
+.gitignore
+.gitattributes
+
+# IDE
+.vscode
+.idea
+*.swp
+*.swo
+*~
+.DS_Store
+*.iml
+
+# Build
+target/
+*.log
+
+# Maven
+.m2/
+
+# Docker
+Dockerfile
+.dockerignore
+
+# Documentation
+README.md
+HELP.md
+
+# Node (if any frontend)
+node_modules/
+npm-debug.log
